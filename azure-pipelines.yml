@@ -22,7 +22,7 @@ stages:
       displayName: version
       inputs:
         azureSubscription: 'scSub002'
-        scriptType: 'ps'
+        scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az --version'
     - task: AzureCLI@2
@@ -32,23 +32,13 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          tier = "Standard"
-          location = "eastus"
-          namePrefix = "qaEnv"
-          principalId=`az ad sp show --id e8de9221-a19c-4c81-b814-fd37c6caf9d2 --query id --output tsv`
-          echo "SpId: principalId"
-    
-    - task: Bash@3
-      displayName:  "bash direct Bash@3"
-      inputs:
-        targetType: 'inline'
-        script: |
-          # Write your commands here
-          tier = "Standard"
-          location = "eastus"
-          namePrefix = "qaEnv"
-          principalId=`az ad sp show --id e8de9221-a19c-4c81-b814-fd37c6caf9d2 --query id --output tsv`
-          echo "SpId: principalId"
+          #tier = 'Standard'
+          #location = "eastus"
+          #namePrefix = "qaEnv"
+          #principalI='35f307a2-474a-45bb-a4df-b84423552cf2'
+          az deployment sub create --name "test-Standard" --location "eastus" --template-file "../main.bicep" --parameters "../main.parameters.json" namePrefix="devEnv" principalId="35f307a2-474a-45bb-a4df-b84423552cf2" tier="Standard" jumpHostPassword="P0ssWord"
+
+ 
 
 #    - task: AzurePowerShell@5
 #      inputs:
