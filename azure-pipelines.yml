@@ -25,10 +25,11 @@ stages:
         scriptType: 'ps'
         scriptLocation: 'inlineScript'
         inlineScript: 'az --version'
-    - task: AzureCLI@1
+    - task: AzureCLI@2
       displayName: "cli bash"
       inputs:
         azureSubscription: 'scSub002'
+        scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
           tier = "Standard"
