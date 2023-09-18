@@ -25,7 +25,18 @@ stages:
         scriptType: 'ps'
         scriptLocation: 'inlineScript'
         inlineScript: 'az --version'
-      
+    - task: AzureCLI@1
+      displayName: "cli bash"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          tier = "Standard"
+          location = "eastus"
+          namePrefix = "qaEnv"
+          principalId=`az ad sp show --id e8de9221-a19c-4c81-b814-fd37c6caf9d2 --query id --output tsv`
+          echo "SpId: principalId"
+          
     - task: AzurePowerShell@5
       inputs:
         azureSubscription: 'scSub002'
