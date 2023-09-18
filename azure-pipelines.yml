@@ -21,7 +21,7 @@ stages:
     - task: AzureCLI@2
       displayName: version
       inputs:
-        azureSubscription: 'Azure Access'
+        azureSubscription: 'scSub002'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az --version'
