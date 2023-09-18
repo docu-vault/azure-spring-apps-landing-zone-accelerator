@@ -1,5 +1,7 @@
 $timeStamp = Get-Date -Format "yyyyMMddHHmm"
 $tier = "Standard"
+$location = "eastus"
+$namePrefix = "devEnv"
 
 if ($null -eq $location -or $null -eq $namePrefix) {
 
