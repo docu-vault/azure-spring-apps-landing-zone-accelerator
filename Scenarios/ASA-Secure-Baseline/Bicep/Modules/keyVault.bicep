@@ -30,7 +30,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-07-01' = {
   tags: tags
 }
 
-module privateEndpoint 'privateendpoint.bicep' = {
+module privateEndpoint 'privateEndpoint.bicep' = {
   name: '${timeStamp}-${name}-privateEndpoint'
   scope: resourceGroup(targetResourceGroupName)
   params: {
