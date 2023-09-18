@@ -1,7 +1,7 @@
 trigger: none
 
 pool:
-  vmImage: windows-latest
+  vmImage: ubuntu-latest
 
 variables:
   location: 'westus'
@@ -50,23 +50,23 @@ stages:
           principalId=`az ad sp show --id e8de9221-a19c-4c81-b814-fd37c6caf9d2 --query id --output tsv`
           echo "SpId: principalId"
 
-    - task: AzurePowerShell@5
-      inputs:
-        azureSubscription: 'scSub002'
-        ScriptType: 'InlineScript'
-        Inline: |
-          # You can write your azure powershell scripts inline here. 
-          # You can also pass predefined and custom variables to this script using arguments
-          write-host "Test"
-        azurePowerShellVersion: 'LatestVersion'
+#    - task: AzurePowerShell@5
+#      inputs:
+#        azureSubscription: 'scSub002'
+#        ScriptType: 'InlineScript'
+#        Inline: |
+#          # You can write your azure powershell scripts inline here. 
+#          # You can also pass predefined and custom variables to this script using arguments
+#          write-host "Test"
+#        azurePowerShellVersion: 'LatestVersion'
 
       
-    - task: AzureCLI@2
-      displayName: Provision
-      inputs:
-        azureSubscription: 'scSub002'
-        scriptType: 'ps'
-        scriptLocation: 'scriptPath'
-        scriptPath: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment/deploy_standard.ps1'
-        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+#    - task: AzureCLI@2
+#      displayName: Provision
+#      inputs:
+#        azureSubscription: 'scSub002'
+#        scriptType: 'ps'
+#        scriptLocation: 'scriptPath'
+#        scriptPath: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment/deploy_standard.ps1'
+#        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
