@@ -37,7 +37,19 @@ stages:
           namePrefix = "qaEnv"
           principalId=`az ad sp show --id e8de9221-a19c-4c81-b814-fd37c6caf9d2 --query id --output tsv`
           echo "SpId: principalId"
-          
+    
+    - task: Bash@3
+      displayName:  "bash direct Bash@3"
+      inputs:
+        targetType: 'inline'
+        script: |
+          # Write your commands here
+          tier = "Standard"
+          location = "eastus"
+          namePrefix = "qaEnv"
+          principalId=`az ad sp show --id e8de9221-a19c-4c81-b814-fd37c6caf9d2 --query id --output tsv`
+          echo "SpId: principalId"
+
     - task: AzurePowerShell@5
       inputs:
         azureSubscription: 'scSub002'
