@@ -1,19 +1,39 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- main
+trigger: none
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+  location: 'westus'
+  templateFile: 'Scenarios/ASA-Secure-Baseline/Bicep/main.bicep'
+  paramFile: 'Scenarios/ASA-Secure-Baseline/Bicep/main.parameters.json'
+  azureSubscription: 'lza-sc'
+  vmImageName : 'ubuntu-latest'
+  tier : "Standard"
+  namePrefix : "devEnv"
+  hub-network-templateFile : 'Scenarios/ASA-Secure-Baseline/Bicep/hub-network.bicep'
+  
+stages:
+- stage: Provision 
+  jobs:
+  - job: provision_infra
+    steps:
+    - task: AzureCLI@2
+      displayName: version
+      inputs:
+        azureSubscription: 'Azure Access'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az --version'
+      
+    - task: AzurePowerShell@5
+      inputs:
+        azureSubscription: 'scSub002'
+        ScriptType: 'InlineScript'
+        Inline: |
+          # You can write your azure powershell scripts inline here. 
+          # You can also pass predefined and custom variables to this script using arguments
+          write-host "Test"
+        azurePowerShellVersion: 'LatestVersion'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+
