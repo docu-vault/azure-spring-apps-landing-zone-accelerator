@@ -22,7 +22,7 @@ stages:
       displayName: version
       inputs:
         azureSubscription: 'scSub002'
-        scriptType: 'bash'
+        scriptType: 'ps'
         scriptLocation: 'inlineScript'
         inlineScript: 'az --version'
       
