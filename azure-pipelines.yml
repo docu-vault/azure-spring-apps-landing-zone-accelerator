@@ -36,7 +36,7 @@ stages:
           #location = "eastus"
           #namePrefix = "qaEnv"
           #principalI='35f307a2-474a-45bb-a4df-b84423552cf2'
-          az deployment sub create --name "test-Standard" --location "eastus" --template-file "../main.bicep" --parameters "../main.parameters.json" --location="eastus" namePrefix="devEnv" principalId="35f307a2-474a-45bb-a4df-b84423552cf2" tier="Standard" jumpHostPassword="P0ssWord"
+          az deployment sub create --name "test-Standard" --location "eastus" --template-file "../main.bicep" --parameters "../main.parameters.json" location="eastus" namePrefix="devEnv" principalId="35f307a2-474a-45bb-a4df-b84423552cf2" tier="Standard" jumpHostPassword="P0ssWord"
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
  
