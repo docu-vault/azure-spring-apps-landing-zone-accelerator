@@ -42,15 +42,7 @@ stages:
       inputs:
         azureSubscription: 'scSub002'
         scriptType: 'ps'
-        scriptLocation: 'inlineScript'
-        inlineScript: |
-          # You can write your azure powershell scripts inline here. 
-          # You can also pass predefined and custom variables to this script using arguments
-          $timeStamp = Get-Date -Format "yyyyMMddHHmm"
-          $tier = "Standard"
-          $location = "eastus"
-          $namePrefix = "devEnv"
-          $principalId = (az ad sp show --id e8de9221-a19c-4c81-b814-fd37c6caf9d2 --query id --output tsv)
-          write-host $principalId
+        scriptLocation: 'scriptPath'
+        scriptPath: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment/deploy_standard.ps1'
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
