@@ -12,7 +12,7 @@ stages:
   - job: "DeProvisionInfra"
     steps:
     - task: AzureCLI@2
-      displayName: "Deprovision Infrastructure"
+      displayName: "To be Deleted - Testing Purposes"
       inputs:
         azureSubscription: 'scSub002'
         scriptType: 'bash'
@@ -26,11 +26,6 @@ stages:
           echo $lb
           lb2="$(namePrefix)-Apps"
           echo $lb2
-          #location = "eastus"
-          #namePrefix = "qaEnv"
-          #principalId='35f307a2-474a-45bb-a4df-b84423552cf2'
-          #az deployment group create --template-file empty.bicep --resource-group rg-devEnv-APPS --mode complete
-          #az deployment sub create --name "test-Standard" --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword="P0ssWord"
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
   - job: "DeProvisionAPPS"
     steps:
@@ -41,7 +36,67 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          resourceGroup=rg-$(namePrefix)-Apps
+          resourceGroup=rg-$(namePrefix)-APPS
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+  - job: "DeProvisionSHARED"
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group SHARED"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-SHARED
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+  - job: "DeProvision_PRIVATEZONES"
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group PRIVATEZONES"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-PRIVATEZONES
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+  - job: "DeProvision_SPOKE"
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group SPOKE"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-SPOKE
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+  - job: "DeProvision_HUB"
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group HUB"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-HUB
           echo Deleting Resource Group: $resourceGroup
           echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
