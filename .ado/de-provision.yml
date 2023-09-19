@@ -45,3 +45,16 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group: NetworkWatcherRG"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=NetworkWatcherRG
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
