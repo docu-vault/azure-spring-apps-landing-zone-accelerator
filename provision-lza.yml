@@ -5,22 +5,7 @@ pool:
 
 variables:
   - group : lza-dev
-  - name : Vlocation
-    value : ${variabes.location}
-  - name : Vtier
-    value : ${variabes.tier}
-  - name : VtemplateFile
-    value : ${variabes.templateFile}
-  - name : VnamePrefix
-    value : ${variabes.namePrefix}
-  - name : VservicePrincipleId
-    value : ${variabes.servicePrincipleId}
-  - name : VjumpHostPassword
-    value : ${variabes.jumpHostPassword}
-  - name : VdeploymentName
-    value : ${variabes.deploymentName}
-  - name : VparamFile
-    value : ${variabes.paramFile}
+
 stages:
 - stage: Provision_Infrastruture
   jobs:
