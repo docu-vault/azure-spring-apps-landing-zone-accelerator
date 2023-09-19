@@ -79,7 +79,7 @@ stages:
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
   - job: Deprovision_RG_SPOKE
-    dependsOn: [Deprovision_RG_PRIVATEZONESS]
+    dependsOn: [Deprovision_RG_PRIVATEZONES]
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group SPOKE"
