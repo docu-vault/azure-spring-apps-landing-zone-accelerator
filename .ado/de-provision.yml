@@ -1,0 +1,57 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  location: 'eastus'
+  templateFile: '../main.bicep'
+  paramFile: '../main.parameters.json'
+  azureSubscription: 'lza-sc'
+  vmImageName : 'ubuntu-latest'
+  tier : "Standard"
+  namePrefix : "devEnv"
+  servicePrincipalId : '35f307a2-474a-45bb-a4df-b84423552cf2'
+  hub-network-templateFile : 'Scenarios/ASA-Secure-Baseline/Bicep/hub-network.bicep'
+  
+stages:
+- stage: Provision 
+  jobs:
+  - job: provision_infra
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Infrastructure"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          #tier = 'Standard'
+          #location = "eastus"
+          #namePrefix = "qaEnv"
+          #principalId='35f307a2-474a-45bb-a4df-b84423552cf2'
+          az deployment group create --template-file empty.bicep --resource-group rg-devEnv-APPS --mode complete
+          az deployment sub create --name "test-Standard" --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword="P0ssWord"
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+
+ 
+
+#    - task: AzurePowerShell@5
+#      inputs:
+#        azureSubscription: 'scSub002'
+#        ScriptType: 'InlineScript'
+#        Inline: |
+#          # You can write your azure powershell scripts inline here. 
+#          # You can also pass predefined and custom variables to this script using arguments
+#          write-host "Test"
+#        azurePowerShellVersion: 'LatestVersion'
+
+      
+#    - task: AzureCLI@2
+#      displayName: Provision
+#      inputs:
+#        azureSubscription: 'scSub002'
+#        scriptType: 'ps'
+#        scriptLocation: 'scriptPath'
+#        scriptPath: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment/deploy_standard.ps1'
+#        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
