@@ -10,7 +10,7 @@ variables:
 stages:
 - stage: Provision 
   jobs:
-  - job: De-provision_infra
+  - job: "DeProvisionInfra"
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Infrastructure"
