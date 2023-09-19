@@ -63,7 +63,7 @@ stages:
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
   - job: Deprovision_RG_PRIVATEZONES
-    dependsOn: [Deprovision_RG_SHARED"]
+    dependsOn: [Deprovision_RG_SHARED]
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group PRIVATEZONES"
