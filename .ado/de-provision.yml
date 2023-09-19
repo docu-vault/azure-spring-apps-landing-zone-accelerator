@@ -4,7 +4,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  -group : lza-dev
+  - group : lza-dev
 
   
 stages:
@@ -19,10 +19,10 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          echo '$(location)'
-          echo '$(tier)'
-          echo '$(namePrefix)'
-          echo '$(servicePrincipleId)'
+          echo $(location)
+          echo $(tier)
+          echo $(namePrefix)
+          echo $(principleId)
           #location = "eastus"
           #namePrefix = "qaEnv"
           #principalId='35f307a2-474a-45bb-a4df-b84423552cf2'
