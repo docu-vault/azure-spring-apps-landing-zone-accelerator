@@ -27,6 +27,8 @@ stages:
           lb2="$(namePrefix)-Apps"
           echo $lb2
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+- stage: Deprovision APPS
+  jobs:
   - job: "DeProvisionAPPS"
     steps:
     - task: AzureCLI@2
@@ -42,6 +44,8 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+- stage: Deprovision SHARED
+  jobs:
   - job: "DeProvisionSHARED"
     steps:
     - task: AzureCLI@2
@@ -57,6 +61,8 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+- stage: Deprovision PRIVATEZONES
+  jobs:
   - job: "DeProvision_PRIVATEZONES"
     steps:
     - task: AzureCLI@2
@@ -72,6 +78,8 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+- stage: Deprovision SPOKE
+  jobs:
   - job: "DeProvision_SPOKE"
     steps:
     - task: AzureCLI@2
@@ -87,6 +95,8 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+- stage: Deprovision HUB
+  jobs:
   - job: "DeProvision_HUB"
     steps:
     - task: AzureCLI@2
@@ -102,6 +112,8 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+- stage: Deprovision NetworkWatcherRG
+  jobs:
   - job: "DeProvision_NetworkWatcherRG"
     steps:
     - task: AzureCLI@2
