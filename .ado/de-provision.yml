@@ -9,7 +9,7 @@ variables:
 stages:
 - stage: Deprovision 
   jobs:
-  - job: "TEST"
+  - job: TEST
     steps:
     - task: AzureCLI@2
       displayName: "To be Deleted - Testing Purposes"
@@ -28,7 +28,7 @@ stages:
           echo $lb2
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
-  - job: "Deprovision_RG_APPS"
+  - job: Deprovision_RG_APPS
     dependsOn: [TEST]
     steps:
     - task: AzureCLI@2
@@ -45,7 +45,7 @@ stages:
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
-  - job: "Deprovision_RG_SHARED"
+  - job: Deprovision_RG_SHARED
     dependsOn: [Deprovision_RG_APPS]
     steps:
     - task: AzureCLI@2
@@ -62,7 +62,7 @@ stages:
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
-  - job: "Deprovision_RG_PRIVATEZONES"
+  - job: Deprovision_RG_PRIVATEZONES
     dependsOn: [Deprovision_RG_SHARED"]
     steps:
     - task: AzureCLI@2
@@ -78,7 +78,7 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-  - job: "Deprovision_RG_SPOKE"
+  - job: Deprovision_RG_SPOKE
     dependsOn: [Deprovision_RG_PRIVATEZONESS]
     steps:
     - task: AzureCLI@2
@@ -94,7 +94,7 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-  - job: "Deprovision_RG_HUB"
+  - job: Deprovision_RG_HUB
     dependsOn: [Deprovision_RG_SPOKE]
     steps:
     - task: AzureCLI@2
@@ -111,7 +111,7 @@ stages:
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
-  - job: "DeProvision_NetworkWatcherRG"
+  - job: DeProvision_NetworkWatcherRG
     dependsOn: [Deprovision_RG_HUB]
     steps:
     - task: AzureCLI@2
