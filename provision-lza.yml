@@ -43,7 +43,8 @@ stages:
           echo $(VnamePrefix)
           echo $(VservicePrincipleId)
           echo $(VdeploymentName)
-          echo 'Executing --> az deployment sub create --name $(VdeploymentName) --location $(Vlocation) --template-file $(VtemplateFile) --parameters $(VparamFile) location=$(Vlocation) namePrefix=$(VnamePrefix) principalId=$(VservicePrincipalId) tier=$(Vtier) jumpHostPassword=$(VjumpHostPassword)'
+          echo 'Executing-1 --> az deployment sub create --name $deploymentName --location $location --template-file $templateFile --parameters $paramFile location=$location namePrefix=$namePrefix principalId=$servicePrincipalId tier=$tier jumpHostPassword=$jumpHostPassword'
+          echo 'Executing --> az deployment sub create --name ${deploymentName} --location ${location} --template-file ${templateFile} --parameters ${paramFile} location=${location} namePrefix=${namePrefix} principalId=${servicePrincipalId} tier=${tier} jumpHostPassword=${jumpHostPassword}'
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
   - job: provision_resources
     steps:
@@ -61,5 +62,5 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          'az deployment sub create --name $(VdeploymentName) --location $(Vlocation) --template-file $(VtemplateFile) --parameters $(VparamFile) location=$(Vlocation) namePrefix=$(VnamePrefix) principalId=$(VservicePrincipalId) tier=$(Vtier) jumpHostPassword=$(VjumpHostPassword)'
+          'az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)'
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
