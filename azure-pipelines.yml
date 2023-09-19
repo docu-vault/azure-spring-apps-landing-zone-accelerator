@@ -5,12 +5,13 @@ pool:
 
 variables:
   location: 'westus'
-  templateFile: 'Scenarios/ASA-Secure-Baseline/Bicep/main.bicep'
-  paramFile: 'Scenarios/ASA-Secure-Baseline/Bicep/main.parameters.json'
+  templateFile: '../main.bicep'
+  paramFile: '../main.parameters.json'
   azureSubscription: 'lza-sc'
   vmImageName : 'ubuntu-latest'
   tier : "Standard"
   namePrefix : "devEnv"
+  servicePrincipalId : '35f307a2-474a-45bb-a4df-b84423552cf2'
   hub-network-templateFile : 'Scenarios/ASA-Secure-Baseline/Bicep/hub-network.bicep'
   
 stages:
@@ -35,8 +36,8 @@ stages:
           #tier = 'Standard'
           #location = "eastus"
           #namePrefix = "qaEnv"
-          #principalI='35f307a2-474a-45bb-a4df-b84423552cf2'
-          az deployment sub create --name "test-Standard" --location "eastus" --template-file "../main.bicep" --parameters "../main.parameters.json" location="eastus" namePrefix="devEnv" principalId="35f307a2-474a-45bb-a4df-b84423552cf2" tier="Standard" jumpHostPassword="P0ssWord"
+          #principalId='35f307a2-474a-45bb-a4df-b84423552cf2'
+          az deployment sub create --name "test-Standard" --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$tier jumpHostPassword="P0ssWord"
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
  
