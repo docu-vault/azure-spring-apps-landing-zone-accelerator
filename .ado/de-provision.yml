@@ -30,6 +30,7 @@ stages:
 
   - job: Deprovision_RG_APPS
     dependsOn: [TEST]
+    condition: succeededOrFailed()
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group APPS"
@@ -47,6 +48,7 @@ stages:
 
   - job: Deprovision_RG_SHARED
     dependsOn: [Deprovision_RG_APPS]
+    condition: succeededOrFailed()
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group SHARED"
@@ -64,6 +66,7 @@ stages:
 
   - job: Deprovision_RG_PRIVATEZONES
     dependsOn: [Deprovision_RG_SHARED]
+    condition: succeededOrFailed()
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group PRIVATEZONES"
@@ -80,6 +83,7 @@ stages:
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
   - job: Deprovision_RG_SPOKE
     dependsOn: [Deprovision_RG_PRIVATEZONES]
+    condition: succeededOrFailed()
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group SPOKE"
@@ -96,6 +100,7 @@ stages:
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
   - job: Deprovision_RG_HUB
     dependsOn: [Deprovision_RG_SPOKE]
+    condition: succeededOrFailed()
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group HUB"
@@ -113,6 +118,7 @@ stages:
 
   - job: DeProvision_NetworkWatcherRG
     dependsOn: [Deprovision_RG_HUB]
+    condition: succeededOrFailed()
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group: NetworkWatcherRG"
