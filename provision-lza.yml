@@ -38,9 +38,9 @@ stages:
           echo $(namePrefix)
           echo $(servicePrincipalId)
           echo $(deploymentName)
-          echo 'Executing-1 --> az deployment sub create --name $deploymentName --location $location --template-file $templateFile --parameters $paramFile location=$location namePrefix=$namePrefix principalId=$servicePrincipalId tier=$tier jumpHostPassword=$jumpHostPassword'
+          echo Executing-1 --> az deployment sub create --name $deploymentName --location $location --template-file $templateFile --parameters $paramFile location=$location namePrefix=$namePrefix principalId=$servicePrincipalId tier=$tier jumpHostPassword=$jumpHostPassword
           echo 'next one'
-          echo 'Executing --> az deployment sub create --name ${deploymentName} --location ${location} --template-file ${templateFile} --parameters ${paramFile} location=${location} namePrefix=${namePrefix} principalId=${servicePrincipalId} tier=${tier} jumpHostPassword=${jumpHostPassword}''
+          echo Executing --> az deployment sub create --name ${deploymentName} --location ${location} --template-file ${templateFile} --parameters ${paramFile} location=${location} namePrefix=${namePrefix} principalId=${servicePrincipalId} tier=${tier} jumpHostPassword=${jumpHostPassword}
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
   - job: provision_resources
     steps:
