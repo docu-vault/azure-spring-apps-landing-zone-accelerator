@@ -6,7 +6,6 @@ pool:
 variables:
   - group : lza-dev
 
-  
 stages:
 - stage: Provision 
   jobs:
@@ -33,5 +32,16 @@ stages:
           #az deployment group create --template-file empty.bicep --resource-group rg-devEnv-APPS --mode complete
           #az deployment sub create --name "test-Standard" --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword="P0ssWord"
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-
- 
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group APPS"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-Apps
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
