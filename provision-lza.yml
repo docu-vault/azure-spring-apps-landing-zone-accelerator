@@ -5,7 +5,22 @@ pool:
 
 variables:
   - group : lza-dev
-
+  - name : Vlocation
+    value : ${variabes.location}
+  - name : Vtier
+    value : ${variabes.tier}
+  - name : VtemplateFile
+    value : ${variabes.templateFile}
+  - name : VnamePrefix
+    value : ${variabes.namePrefix}
+  - name : VservicePrincipleId
+    value : ${variabes.servicePrincipleId}
+  - name : VjumpHostPassword
+    value : ${variabes.jumpHostPassword}
+  - name : VdeploymentName
+    value : ${variabes.deploymentName}
+  - name : VparamFile
+    value : ${variabes.paramFile}
 stages:
 - stage: Provision_Infrastruture
   jobs:
@@ -23,7 +38,12 @@ stages:
           echo $(namePrefix)
           echo $(servicePrincipleId)
           echo $(deploymentName)
-          echo Executing --> az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
+          echo $(Vlocation)
+          echo $(Vtier)
+          echo $(VnamePrefix)
+          echo $(VservicePrincipleId)
+          echo $(VdeploymentName)
+          echo 'Executing --> az deployment sub create --name $(VdeploymentName) --location $(Vlocation) --template-file $(VtemplateFile) --parameters $(VparamFile) location=$(Vlocation) namePrefix=$(VnamePrefix) principalId=$(VservicePrincipalId) tier=$(Vtier) jumpHostPassword=$(VjumpHostPassword)'
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
   - job: provision_resources
     steps:
@@ -41,6 +61,5 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          #echo Executing --> az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
-          az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
+          az deployment sub create --name $(VdeploymentName) --location $(Vlocation) --template-file $(VtemplateFile) --parameters $(VparamFile) location=$(Vlocation) namePrefix=$(VnamePrefix) principalId=$(VservicePrincipalId) tier=$(Vtier) jumpHostPassword=$(VjumpHostPassword)
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
