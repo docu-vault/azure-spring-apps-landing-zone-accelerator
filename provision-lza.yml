@@ -23,6 +23,7 @@ stages:
           echo $(namePrefix)
           echo $(servicePrincipleId)
           echo $(deploymentName)
+          echo Executing --> az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
   - job: provision_resources
     steps:
@@ -40,6 +41,6 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          echo Executing --> az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
+          #echo Executing --> az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
           az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
