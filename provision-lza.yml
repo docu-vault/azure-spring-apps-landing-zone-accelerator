@@ -61,5 +61,5 @@ stages:
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: |
-          az deployment sub create --name $(VdeploymentName) --location $(Vlocation) --template-file $(VtemplateFile) --parameters $(VparamFile) location=$(Vlocation) namePrefix=$(VnamePrefix) principalId=$(VservicePrincipalId) tier=$(Vtier) jumpHostPassword=$(VjumpHostPassword)
+          'az deployment sub create --name $(VdeploymentName) --location $(Vlocation) --template-file $(VtemplateFile) --parameters $(VparamFile) location=$(Vlocation) namePrefix=$(VnamePrefix) principalId=$(VservicePrincipalId) tier=$(Vtier) jumpHostPassword=$(VjumpHostPassword)'
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
