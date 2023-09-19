@@ -37,7 +37,7 @@ stages:
           #location = "eastus"
           #namePrefix = "qaEnv"
           #principalId='35f307a2-474a-45bb-a4df-b84423552cf2'
-          az deployment sub create --name "test-Standard" --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$tier jumpHostPassword="P0ssWord"
+          az deployment sub create --name "test-Standard" --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword="P0ssWord"
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
 
  
