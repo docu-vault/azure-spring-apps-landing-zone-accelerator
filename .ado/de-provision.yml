@@ -27,7 +27,7 @@ stages:
           lb2="$(namePrefix)-Apps"
           echo $lb2
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision APPS
+- stage: Deprovision_RG_APPS
   jobs:
   - job: "DeProvisionAPPS"
     steps:
@@ -44,7 +44,7 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision SHARED
+- stage: Deprovision_RG_SHARED
   jobs:
   - job: "DeProvisionSHARED"
     steps:
@@ -61,7 +61,7 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision PRIVATEZONES
+- stage: Deprovision_RG_PRIVATEZONES
   jobs:
   - job: "DeProvision_PRIVATEZONES"
     steps:
@@ -78,7 +78,7 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision SPOKE
+- stage: Deprovision_RG_SPOKE
   jobs:
   - job: "DeProvision_SPOKE"
     steps:
@@ -95,7 +95,7 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision HUB
+- stage: Deprovision_RG_HUB
   jobs:
   - job: "DeProvision_HUB"
     steps:
@@ -112,7 +112,7 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision NetworkWatcherRG
+- stage: Deprovision_RG_NetworkWatcherRG
   jobs:
   - job: "DeProvision_NetworkWatcherRG"
     steps:
