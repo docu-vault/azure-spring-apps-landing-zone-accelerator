@@ -9,7 +9,7 @@ variables:
 stages:
 - stage: Deprovision 
   jobs:
-  - job: "DeProvisionInfra"
+  - job: "TEST"
     steps:
     - task: AzureCLI@2
       displayName: "To be Deleted - Testing Purposes"
@@ -27,9 +27,9 @@ stages:
           lb2="$(namePrefix)-Apps"
           echo $lb2
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision_RG_APPS
-  jobs:
-  - job: "DeProvisionAPPS"
+
+  - job: "Deprovision_RG_APPS"
+    dependsOn: [TEST]
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group APPS"
@@ -44,9 +44,9 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision_RG_SHARED
-  jobs:
-  - job: "DeProvisionSHARED"
+
+  - job: "Deprovision_RG_SHARED"
+    dependsOn: [Deprovision_RG_APPS]
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group SHARED"
@@ -61,9 +61,9 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision_RG_PRIVATEZONES
-  jobs:
-  - job: "DeProvision_PRIVATEZONES"
+
+  - job: "DeProvision_RG_PRIVATEZONES"
+    dependsOn: [Deprovision_RG_SHARED"]
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group PRIVATEZONES"
@@ -78,9 +78,8 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision_RG_SPOKE
-  jobs:
-  - job: "DeProvision_SPOKE"
+  - job: "DeProvision_RG_SPOKE"
+    dependsOn: [DeProvision_RG_PRIVATEZONES]
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group SPOKE"
@@ -95,9 +94,8 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision_RG_HUB
-  jobs:
-  - job: "DeProvision_HUB"
+  - job: "Deprovision_RG_HUB"
+    dependsOn: [DeProvision_RG_SPOKE]
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group HUB"
@@ -112,9 +110,9 @@ stages:
           az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
           az group delete --name $resourceGroup -y
         workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
-- stage: Deprovision_RG_NetworkWatcherRG
-  jobs:
+        
   - job: "DeProvision_NetworkWatcherRG"
+    dependsOn: [Deprovision_RG_HUB]
     steps:
     - task: AzureCLI@2
       displayName: "Deprovision Resource Group: NetworkWatcherRG"
