@@ -1,19 +1,45 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
-trigger:
-- main
+trigger: none
 
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+  - group : lza-dev
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+stages:
+- stage: Provision_Infrastruture
+  jobs:
+  - job: show_variables
+    steps:
+    - task: AzureCLI@2
+      displayName: "Output Relevant Variables"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo $(location)
+          echo $(tier)
+          echo $(namePrefix)
+          echo $(servicePrincipleId)
+          echo $(deploymentName)
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+  - job: provision_resources
+    steps:
+    - task: AzureCLI@2
+      displayName: "Provision Various Resources"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az --version'
+    - task: AzureCLI@2
+      displayName: "Resource Provision Using Bicep"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo Executing --> az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
+          az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
