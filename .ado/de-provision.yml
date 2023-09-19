@@ -23,6 +23,10 @@ stages:
           echo $(tier)
           echo $(namePrefix)
           echo $(principleId)
+          lb=rg-$(namePrefix)-Apps
+          echo $lb
+          lb2="$(namePrefix)-Apps"
+          echo $lb2
           #location = "eastus"
           #namePrefix = "qaEnv"
           #principalId='35f307a2-474a-45bb-a4df-b84423552cf2'
