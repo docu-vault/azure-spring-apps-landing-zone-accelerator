@@ -4,7 +4,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  location: 'westus'
+  location: 'eastus'
   templateFile: '../main.bicep'
   paramFile: '../main.parameters.json'
   azureSubscription: 'lza-sc'
