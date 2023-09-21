@@ -49,7 +49,6 @@ resources:
     endpoint: <Add your GitHub service connection name here>
     name: Azure-Samples/spring-petclinic-microservices
     ref: main
-
 jobs:
   - job: deploy_hub_network
     displayName: Deploy 02 Hub Network
