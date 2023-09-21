@@ -1,0 +1,47 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group : lza-dev
+
+stages:
+- stage: Provision_Infrastruture
+  jobs:
+  - job: show_variables
+    steps:
+    - task: AzureCLI@2
+      displayName: "Output Relevant Variables"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo $(location)
+          echo $(tier)
+          echo $(namePrefix)
+          echo $(servicePrincipalId)
+          echo $(deploymentName)
+          echo executing-1: az deployment sub create --name $deploymentName --location $location --template-file $templateFile --parameters $paramFile location=$location namePrefix=$namePrefix principalId=$servicePrincipalId tier=$tier jumpHostPassword=$jumpHostPassword
+          echo 'next one'
+          echo Executing: az deployment sub create --name ${deploymentName} --location ${location} --template-file ${templateFile} --parameters ${paramFile} location=${location} namePrefix=${namePrefix} principalId=${servicePrincipalId} tier=${tier} jumpHostPassword=${jumpHostPassword}
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+  - job: provision_resources
+    steps:
+    - task: AzureCLI@2
+      displayName: "Provision Various Resources"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: 'az --version'
+    - task: AzureCLI@2
+      displayName: "Resource Provision Using Bicep"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          az deployment sub create --name $(deploymentName) --location $(location) --template-file $(templateFile) --parameters $(paramFile) location=$(location) namePrefix=$(namePrefix) principalId=$(servicePrincipalId) tier=$(tier) jumpHostPassword=$(jumpHostPassword)
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'

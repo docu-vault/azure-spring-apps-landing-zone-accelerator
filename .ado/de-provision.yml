@@ -1,0 +1,135 @@
+trigger: none
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  - group : lza-dev
+
+stages:
+- stage: Deprovision 
+  jobs:
+  - job: TEST
+    steps:
+    - task: AzureCLI@2
+      displayName: "To be Deleted - Testing Purposes"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo $(location)
+          echo $(tier)
+          echo $(namePrefix)
+          echo $(principleId)
+          lb=rg-$(namePrefix)-Apps
+          echo $lb
+          lb2="$(namePrefix)-Apps"
+          echo $lb2
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+
+  - job: Deprovision_RG_APPS
+    dependsOn: [TEST]
+    condition: succeededOrFailed()
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group APPS"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-APPS
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+
+  - job: Deprovision_RG_SHARED
+    dependsOn: [Deprovision_RG_APPS]
+    condition: succeededOrFailed()
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group SHARED"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-SHARED
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+
+  - job: Deprovision_RG_PRIVATEZONES
+    dependsOn: [Deprovision_RG_SHARED]
+    condition: succeededOrFailed()
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group PRIVATEZONES"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-PRIVATEZONES
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+  - job: Deprovision_RG_SPOKE
+    dependsOn: [Deprovision_RG_PRIVATEZONES]
+    condition: succeededOrFailed()
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group SPOKE"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-SPOKE
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+  - job: Deprovision_RG_HUB
+    dependsOn: [Deprovision_RG_SPOKE]
+    condition: succeededOrFailed()
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group HUB"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=rg-$(namePrefix)-HUB
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
+
+  - job: DeProvision_NetworkWatcherRG
+    dependsOn: [Deprovision_RG_HUB]
+    condition: succeededOrFailed()
+    steps:
+    - task: AzureCLI@2
+      displayName: "Deprovision Resource Group: NetworkWatcherRG"
+      inputs:
+        azureSubscription: 'scSub002'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          resourceGroup=NetworkWatcherRG
+          echo Deleting Resource Group: $resourceGroup
+          echo executing az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az deployment group create --template-file $(deleteTemplateFile) --resource-group $resourceGroup --mode complete
+          az group delete --name $resourceGroup -y
+        workingDirectory: 'Scenarios/ASA-Secure-Baseline/Bicep/Deployment'
